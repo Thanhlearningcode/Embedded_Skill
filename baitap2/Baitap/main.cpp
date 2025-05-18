@@ -5,7 +5,7 @@ int main() {
    
 
 
-    auto basic = std::make_shared<Basic_Notification>("Hello, this is a test notification!");
+    auto basic = std::make_shared<Basic_Notification>("Hello guys, this is a test notification!");
     auto email = std::make_shared<Email_Notification>(basic);
     auto sms   = std::make_shared<SMS_Notification>(email);
 
