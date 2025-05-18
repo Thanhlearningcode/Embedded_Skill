@@ -16,8 +16,8 @@ void Basic_Notification::accept(Notifcation_Visitor *visitor) const {
     visitor->visit(this);
 }
 
-Notification_Decorator::Notification_Decorator(const Notifcation *notification) :
-                                              wrapped_notification(notification) {}
+Notification_Decorator::Notification_Decorator(std::shared_ptr<const Notification> notifcation) :
+                                              wrapped_notification(std::move(notifcation)) {}
 
 void Notification_Decorator::send() const {
     wrapped_notification->send();
@@ -32,37 +32,37 @@ void Notification_Decorator::accept(Notifcation_Visitor *visitor) const {
 }
 
 Notification_Decorator::~Notification_Decorator() {
-    delete wrapped_notification;
+    
 }
 
-Email_Notification::Email_Notification(const Notifcation *notification) :
-                                        Notification_Decorator(notification) {}
+Email_Notification::Email_Notification(std::shared_ptr<const Notification> notifcation) :
+                                        Notification_Decorator(std::move(notifcation)) {}
 
 void Email_Notification::send() const {
     std::cout<<"Email send:"<<Get_Message()<<std::endl;
     Notification_Decorator::send();
 }
 
-SMS_Notification::SMS_Notification(const Notifcation *notification) : Notification_Decorator(notification) {}
+SMS_Notification::SMS_Notification(std::shared_ptr<const Notification> notifcation) : Notification_Decorator(std::move(notifcation)) {}
 void SMS_Notification::send() const {
     std:: cout<<"Sending SMS:"<<Get_Message()<<std::endl;
     Notification_Decorator::send();
 }
 
-Zalo_Notification::Zalo_Notification(const Notifcation *notification) : Notification_Decorator(notification) {}
+Zalo_Notification::Zalo_Notification(std::shared_ptr<const Notification> notifcation) : Notification_Decorator(std::move(notifcation)) {}
 void Zalo_Notification::send() const {
     std::cout <<"Sending Zalo:"<<Get_Message()<<std::endl;
     Notification_Decorator::send();
 }
 
 /*face*/
-Face_Notification::Face_Notification(const Notifcation * notification) : Notification_Decorator(notification) {}
+Face_Notification::Face_Notification(std::shared_ptr<const Notification> notifcation) : Notification_Decorator(std::move(notifcation)) {}
 void Face_Notification::send() const {
     std::cout<<"Face send"<<Get_Message()<<std::endl;
     Notification_Decorator::send();
 }
 
-void Visitor_Logging::visit(const Notifcation *notification) {
+void Visitor_Logging::visit(const Notification *notification) {
     std::cout<<"Long Notification"<< notification->Get_Message()<<std::endl;
 }
 
@@ -75,7 +75,7 @@ Noification_Manager* Noification_Manager::Get_Instance() {
     return instance;
 }
 
-void Noification_Manager::Send_Notification(const  Notifcation *notification,
+void Noification_Manager::Send_Notification(const  Notification *notification,
                                             Notifcation_Visitor* visitor) {
 notification->accept(visitor);
 notification->send();                                      
