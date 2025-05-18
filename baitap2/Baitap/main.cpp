@@ -15,8 +15,6 @@ int main() {
 
     manager->Send_Notification(sms.get(), loggingVisitor);
 
-    // Không cần delete thủ công vì NotificationDecorator đã tự động xóa wrapped_notification_
-    // delete smsNotification; 
     delete loggingVisitor;
 
     return 0;
